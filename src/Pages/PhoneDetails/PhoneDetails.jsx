@@ -1,17 +1,19 @@
 /* eslint-disable react/no-unknown-property */
 import { useEffect, useState } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
+import swal from 'sweetalert';
+
 
 const PhoneDetails = () => {
     const [phone, setPhone] = useState([]);
-    const {image,phone_name,brand_name}=phone || {};
-    console.log(phone)
+    const { image, phone_name, brand_name } = phone || {};
+    // console.log(phone)
 
 
     const params = useParams();
     // console.log(params);
     const { id } = params;
-    console.log("id :", id);
+    // console.log("id :", id);
 
     const phones = useLoaderData();
     // console.log('data: ',phones);
@@ -24,7 +26,46 @@ const PhoneDetails = () => {
 
 
     }, [id, phones])
-    console.log(phone);
+    // console.log(phone);
+    //local storage management.
+    const handleAddToFavourite = () => {
+        // console.log("handlephone: ",phone);
+        const addFavPhones = [];
+
+        const favItems = JSON.parse(localStorage.getItem('fovourites_phone'));
+        //when there is no fav items.
+        if (!favItems) {
+            addFavPhones.push(phone);
+            localStorage.setItem('fovourites_phone', JSON.stringify(addFavPhones));
+            swal("Good job!", "You clicked the button!", "success");
+
+        }
+        else {
+            //when there is values in fav items.
+            const isExist = favItems.find(p => p.id === id);
+            // console.log("isExist: ",isExist);
+            if (!isExist) {
+                addFavPhones.push(...favItems, phone);
+                localStorage.setItem('fovourites_phone', JSON.stringify(addFavPhones));
+                swal("Good job!", "Added as Favourite Phone!", "success");
+
+                // alert();
+            }
+            else{
+                console.log('already ache');
+                swal("Sorry!", "Already Added.", "error");
+
+            }
+
+
+
+
+        }
+
+        // localStorage.setItem('fovourites_phone',JSON.stringify(id));
+        // console.log("favItems: ",favItems);
+
+    }
 
 
 
@@ -52,11 +93,11 @@ const PhoneDetails = () => {
                         the story
                     </p>
                     <a className="inline-block" href="#">
-                        <button
+                        <button onClick={() => handleAddToFavourite(phone)}
                             className="flex select-none items-center gap-2 rounded-lg py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                             type="button"
                         >
-                            Learn More
+                            Add to favourite
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"

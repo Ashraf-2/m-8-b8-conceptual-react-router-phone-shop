@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
+import Rating from "react-rating";
 const Phone = ({ phone }) => {
-    const {id, phone_name, image, price, rating, brand_name } = phone || {};
+    const { id, phone_name, image, price, rating, brand_name } = phone || {};
     return (
         <div>
             <div className="relative flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
@@ -24,7 +25,14 @@ const Phone = ({ phone }) => {
                         </p>
                     </div>
                     <p className="block font-sans text-base font-medium leading-relaxed text-blue-gray-900 antialiased">
-                        Rating: {rating}
+                        {/* Rating: {rating} */}
+                        {rating}
+
+                        <Rating
+                            initialRating={rating}
+                            readonly
+                        />
+
                     </p>
                     <p className="block font-sans text-sm font-normal leading-normal text-gray-700 antialiased opacity-75">
                         With plenty of talk and listen time, voice-activated Siri access, and an
@@ -39,7 +47,7 @@ const Phone = ({ phone }) => {
                         >
                             See Details
                         </button>
-                    </Link>
+                    </Link> 
                 </div>
             </div>
         </div>
